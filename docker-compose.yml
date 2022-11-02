@@ -36,7 +36,7 @@ services:
 
     ports:
       - '4200:80'
-    image: 46416514/dev-ops-project-app1:2.2.2
+    image: 46416514/dev-ops-project-app1
         
    
     
