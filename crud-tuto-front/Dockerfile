@@ -1,7 +1,3 @@
-FROM node:alpine
-WORKDIR /usr/src/app
-COPY package.json package-lock.json ./
-RUN npm ci
-COPY . .
-#CMD ["npm","start"]
-CMD ["npm","run","dev"]
+FROM nginx:1.17.1-alpine
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY /usr/src/app/dist/crudtuto-Front /usr/share/nginx/html
