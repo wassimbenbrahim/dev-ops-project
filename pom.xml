@@ -45,7 +45,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.46</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -127,11 +127,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>nexus-snapshots</id>
-			<url>http://192.168.1.23:8081/repository/maven-snapshots</url>
+			<url>http://192.168.1.25:8081/repository/maven-snapshots</url>
 		</snapshotRepository>
 		<repository>
 			<id>deploymentREPO</id>
-			<url>http://192.168.1.23:8081/repository/maven-releases/</url>
+			<url>http://192.168.1.25:8081/repository/maven-releases/</url>
 		</repository>
 	</distributionManagement>
 
