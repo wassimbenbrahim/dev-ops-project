@@ -32,11 +32,14 @@ services:
     stdin_open: true
     tty: true
   app1:
-    build: ./crud-tuto-front
+    container_name: dockerfile_angular
+
+    ports:
+      - '4200:80'
+    image: 46416514/dev-ops-project-app1:2.2.2
         
    
-    ports:
-      - "8081:80" # Map the exposed port 80 on the container to port 8081 on the host machine
+    
     restart: always
     depends_on:
       - app
