@@ -15,7 +15,11 @@ stages{
                       }
         }
         
-       
+        stage('test'){
+                                   steps{
+                                       sh 'mvn test'
+                                   }
+                               }
          stage("Run the container with ansible"){
                                steps {
                                   sh 'ansible-playbook  ansible-playbook.yml -k'
@@ -37,11 +41,7 @@ stages{
                                 sh 'mvn clean package'
                                 sh 'mvn install'
                                }}
-                               stage('test'){
-                                   steps{
-                                       sh 'mvn test'
-                                   }
-                               }
+                              
     
             stage('SonarQube analysis') {
                   steps{
