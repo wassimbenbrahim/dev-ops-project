@@ -1,0 +1,96 @@
+ pipeline {
+    agent any
+    
+ environment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    }
+    
+stages{
+
+        stage('Checkout GIT'){
+                      steps{
+                          echo 'Pulling...';
+                          git branch: 'wassim',
+                          url: 'https://github.com/wassimbenbrahim/dev-ops-project.git';
+                      }
+        }
+        
+       
+         stage("Run the container with ansible"){
+                               steps {
+                                  sh 'ansible-playbook  ansible-playbook.yml -k'
+                                     }}
+                          stage('MVN CLEAN')
+            {
+                steps{
+                sh  'mvn clean'
+                }
+            }
+            stage('MCN COMPILE')
+            {
+                steps{
+                sh  'mvn compile'
+                }
+            }
+            stage("Build the package"){
+                            steps {
+                                sh 'mvn clean package'
+                                sh 'mvn install'
+                               }}
+                               stage('test'){
+                                   steps{
+                                       sh 'mvn test'
+                                   }
+                               }
+    
+            stage('SonarQube analysis') {
+                  steps{
+                      script{
+                  
+    def scannerHome = tool 'sonarqube';
+     withSonarQubeEnv('sonarqube') {
+      sh "${scannerHome}/bin/sonar-scanner \
+      -D sonar.login=admin \
+      -D sonar.password=jenkins \
+      -D sonar.projectKey=sonarqube2 \
+      -Dsonar.java.binaries=target \
+      -Dsonar.java.sources=src \
+      -Dsonar.junit.reportPaths=target/test-classes/ \
+      -D sonar.host.url=http:192.168.1.56:9000/"
+    }}}
+  }
+             
+              stage("nexus deploy"){
+              steps {
+                  sh 'mvn deploy'
+                     }
+         }
+                  stage('Build Docker Image') {
+                 steps {
+                 sh'docker images'
+                 sh'docker ps -a'
+                 //sh 'docker build -t 46416514/dockerfile_spring:2.2.1 .'
+                 }
+              }
+         stage('push to dockerhub') {
+            steps{
+                              withCredentials([string(credentialsId: '46416514', variable: 'dockerhub')]) {
+                                     sh "docker login -u 46416514 -p ${dockerhub}"
+
+                               }
+                                    sh'docker push 46416514/dockerfile_spring:2.2.1'
+
+                
+            }
+        }
+        stage ('run container'){
+            steps{
+                
+                                sh 'docker-compose up -d --build'
+            }
+        }
+        
+         
+        
+                         }
+    }
