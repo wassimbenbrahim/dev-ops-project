@@ -14,6 +14,18 @@ stages{
                           url: 'https://github.com/wassimbenbrahim/dev-ops-project.git';
                       }
         }
+        stage ('run container'){
+            steps{
+                
+                                sh 'docker-compose up -d --build'
+            }
+        }
+         stage('test'){
+                                   steps{
+                                       sh 'mvn test'
+                                   }
+                               }
+         
         
        
          stage("Run the container with ansible"){
@@ -79,18 +91,6 @@ stages{
                 
             }
         }
-        stage ('run container'){
-            steps{
-                
-                                sh 'docker-compose up -d --build'
-            }
-        }
-         stage('test'){
-                                   steps{
-                                       sh 'mvn test'
-                                   }
-                               }
-         
         
                          }
     }
