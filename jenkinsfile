@@ -14,17 +14,8 @@ stages{
                           url: 'https://github.com/wassimbenbrahim/dev-ops-project.git';
                       }
         }
-         stage ('run container'){
-            steps{
-                
-                                sh 'docker-compose up -d --build'
-            }
-        }
-        stage('test'){
-                                   steps{
-                                       sh 'mvn test'
-                                   }
-                               }
+         
+      
          stage("Run the container with ansible"){
                                steps {
                                   sh 'ansible-playbook  ansible-playbook.yml -k'
@@ -46,7 +37,11 @@ stages{
                                 sh 'mvn clean package'
                                 sh 'mvn install'
                                }}
-                              
+                               stage('test'){
+                                   steps{
+                                       sh 'mvn test'
+                                   }
+                               } 
     
             stage('SonarQube analysis') {
                   steps{
@@ -57,7 +52,7 @@ stages{
       sh "${scannerHome}/bin/sonar-scanner \
       -D sonar.login=admin \
       -D sonar.password=jenkins \
-      -D sonar.projectKey=sonarqube2 \
+      -D sonar.projectKey=sonarqubee2 \
       -Dsonar.java.binaries=target \
       -Dsonar.java.sources=src \
       -Dsonar.junit.reportPaths=target/test-classes/ \
@@ -89,7 +84,12 @@ stages{
             }
         }
        
-        
+        stage ('run container'){
+            steps{
+                
+                                sh 'docker-compose up -d --build'
+            }
+        }
          
         
                          }
