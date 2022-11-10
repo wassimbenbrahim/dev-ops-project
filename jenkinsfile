@@ -15,11 +15,7 @@ stages{
                       }
         }
         
-        stage('test'){
-                                   steps{
-                                       sh 'mvn test'
-                                   }
-                               }
+       
          stage("Run the container with ansible"){
                                steps {
                                   sh 'ansible-playbook  ansible-playbook.yml -k'
@@ -89,7 +85,11 @@ stages{
                                 sh 'docker-compose up -d --build'
             }
         }
-        
+         stage('test'){
+                                   steps{
+                                       sh 'mvn test'
+                                   }
+                               }
          
         
                          }
