@@ -2,11 +2,11 @@ version: "3.3"
 
 services:
   mysqldb:
-    image: 'mysql:latest'
+    image: mysql:5.7
     restart: unless-stopped
     env_file: ./.env
     environment:      
-      - MYSQL_DATABASE=1
+      - MYSQL_DATABASE=devopsDB
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
     ports:
       - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
